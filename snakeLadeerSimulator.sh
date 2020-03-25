@@ -9,11 +9,12 @@ SNAKE=2
 WINNING_POSITION=100
 
 #variable
-start_position=0
 position=0
+play=0
 
+declare -A array
 #check player get exact winning position 100
-	while [[ $position -le $WINNING_POSITION ]]
+	while [[ $position -lt $WINNING_POSITION ]]
 	do
 		random_number=$((RANDOM%3))
 		die_roll=$(((RANDOM%6)+1))
@@ -24,17 +25,19 @@ position=0
 				;;
 
 			$LADDER)
-				position=$(($position+$die_roll))
-				if [[ $position < $WINNING_POSITION ]]
+				result=$(($position+$die_roll))
+				if [[ $result -le $WINNING_POSITION ]]
 				then
 					position=$(($position+$die_roll))
 				else
 					position=$position
 				fi
+					array[$play]=$position
+					((play++))
 				;;
 
 			$SNAKE)
-				if [[ $position < $die_roll ]]
+				if [[ $position -lt $die_roll ]]
 				then
 					position=$position
 				else
@@ -42,5 +45,6 @@ position=0
 				fi
 				;;
 		esac
-	done
+array[$play]=$position
+done
 
