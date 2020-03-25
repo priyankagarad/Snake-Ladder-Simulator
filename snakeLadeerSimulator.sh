@@ -12,32 +12,35 @@ WINNING_POSITION=100
 start_position=0
 position=0
 
-#check option for no_player,ladder,snake
-function playing_game()
-{
-	while [ $position -lt $WINNING_POSITION ]
+#check player get exact winning position 100
+	while [[ $position -le $WINNING_POSITION ]]
 	do
-		die_roll=$((RANDOM%6))
 		random_number=$((RANDOM%3))
+		die_roll=$(((RANDOM%6)+1))
+
 		case $random_number in
 			$NO_PLAY)
-				start_position=$start_position
+				position=$position
 				;;
+
 			$LADDER)
-				start_position=$(($start_postion+$die_roll))
+				position=$(($position+$die_roll))
+				if [[ $position < $WINNING_POSITION ]]
+				then
+					position=$(($position+$die_roll))
+				else
+					position=$position
+				fi
 				;;
+
 			$SNAKE)
-				start_position=$(($start_position-$die_roll))
+				if [[ $position < $die_roll ]]
+				then
+					position=$position
+				else
+					position=$(($position-$die_roll))
+				fi
 				;;
 		esac
-		echo $start_position
-		((position++))
 	done
-}
-playing_game
 
-#if position less than zero than it call function
-if [ $position -lt 0 ]
-then
-	playing_game
-fi
