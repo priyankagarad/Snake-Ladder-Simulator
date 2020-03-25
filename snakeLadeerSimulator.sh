@@ -2,7 +2,6 @@
 echo "Welcome snake ladder simulator"
 
 #CONSTANT
-PLAYER1=0
 NO_PLAY=0
 LADDER=1
 SNAKE=2
@@ -11,9 +10,11 @@ WINNING_POSITION=100
 #variable
 position=0
 play=0
-
 declare -A array
+
 #check player get exact winning position 100
+function playGame()
+{
 	while [[ $position -lt $WINNING_POSITION ]]
 	do
 		random_number=$((RANDOM%3))
@@ -32,7 +33,6 @@ declare -A array
 				else
 					position=$position
 				fi
-					array[$play]=$position
 					((play++))
 				;;
 
@@ -45,6 +45,18 @@ declare -A array
 				fi
 				;;
 		esac
+
+#print number of time dice was played to win the game  
 array[$play]=$position
 done
+}
 
+# two player play the game 
+player1=$( playGame )
+player2=$( playGame )
+if [ $player1 -gt $player2 ]
+then
+	echo "player1 win"
+else
+	echo "player2 win"
+fi
